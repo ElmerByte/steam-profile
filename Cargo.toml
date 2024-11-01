@@ -1,6 +1,6 @@
 [package]
 name = "steam-profile"
-version = "0.1.5"
+version = "0.1.6"
 license = "MIT"
 edition = "2021"
 description = "A simple library to get basic profile statistics from steam"
