@@ -181,7 +181,7 @@ pub struct Profile {
 }
 
 #[derive(Debug, Deserialize, Default)]
-struct SteamProfile {
+pub struct SteamProfile {
     url: String,
     steamid: String,
     personaname: String,
