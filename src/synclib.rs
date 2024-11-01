@@ -106,7 +106,7 @@ pub fn get_activities_by_url(url_name_id: &str) -> Result<HashMap<String, u32>, 
     Ok(links)
 }
 
-pub fn get_name_by_url(url_name_id: &str) -> Result<SteamProfile, ProfileError> {
+pub fn get_name_by_url(url_name_id: &str) -> Result<UnserializedProfile, ProfileError> {
     let url = url::convert_to_url(url_name_id);
     let content = match ureq::get(&url).call() {
         Ok(r) => r.into_string()?,
@@ -147,7 +147,7 @@ pub fn get_name_by_url(url_name_id: &str) -> Result<SteamProfile, ProfileError> 
     stats = stats.replace(['\\', '\n', '\t'], "" )/*. replace(r#""url":"https:steamcommunity.comid","#,"" ) */.replace("g_rgProfileData = ","" ).replace(";const g_bViewingOwnProfile = 0;$J( function() {window.Responsive_ReparentItemsInResponsiveMode && Responsive_ReparentItemsInResponsiveMode( '.responsive_groupfriends_element', $J('#responsive_groupfriends_element_ctn') );SetupAnimateOnHoverImages();});","" );
     let re = Regex::new(r#""summary":"(.*?)\s*"}"#)?;
     let test = re.captures(&stats).ok_or(anyhow!("Nothing is Captured"))?;
-    let stf: SteamProfile = serde_json::from_str(
+    let stf: UnserializedProfile = serde_json::from_str(
         &stats
             .replace(&test[1], &test[1].replace('"', r#"\""#))
             .replace(
@@ -178,8 +178,9 @@ pub struct Profile {
     inventory: HashMap<String, u32>,
 }
 
+/// Unserialized Version of Profile
 #[derive(Debug, Deserialize, Default)]
-pub struct SteamProfile {
+pub struct UnserializedProfile {
     url: String,
     steamid: String,
     personaname: String,
@@ -188,6 +189,9 @@ pub struct SteamProfile {
     lvl: String,
 }
 impl Profile {
+    /// Returns Profile from a steam page
+    /// # Argunents
+    /// Name, url or id of a steam profile
     pub fn get_full_profile(url_name_id: &str) -> Self {
         let results = (
             get_name_by_url(url_name_id),
