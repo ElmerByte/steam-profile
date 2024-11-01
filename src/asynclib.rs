@@ -66,9 +66,6 @@ pub async fn get_inventory_by_url(url_name_id: &str) -> Result<HashMap<String, u
 ///
 /// This function returns a `ProfileError` in case of failure during fetching or parsing. Possible errors include network issues (`FetchError`) or parsing failures (`ParseError`).
 ///
-/// # Example
-///
-/// ```
 pub async fn get_activities_by_url(
     url_name_id: &str,
 ) -> Result<HashMap<String, u32>, ProfileError> {
@@ -220,7 +217,6 @@ impl Profile {
     ///
     /// None
     ///
-    /// # Example
     #[cfg(feature = "print")]
     pub fn print_profile(self) {
         use owo_colors::OwoColorize;
