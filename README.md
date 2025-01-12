@@ -7,9 +7,16 @@ library uses [ureq](https://crates.io/crates/ureq) and [scraper](https://crates.
 * print - on by default provides pretty print method for Profile  
 ### Sync Example
 ```rust
-use steam_profile::synclib::Profile;
-fn main() {
-    let profile = Profile::get_full_profile("test");
-    profile.print_profile();
+fn sync_example() {
+    use steam_profile::synclib::Profile;
+    let profile: Profile = Profile::get_full_profile("test" /*Name Id or URL*/);
+    profile.print_profile(); // Prints stats in a nice looking table
+}
+
+// requires async feature
+async fn async_example() {
+    use steam_profile::asynclib::Profile;
+    let profile: Profile = Profile::get_full_profile("test" /*Name Id or URL*/).await;
+    profile.print_profile(); // Prints stats in a nice looking table
 }
 ```
